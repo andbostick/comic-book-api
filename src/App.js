@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
+import Card from './components/card';
+
 
 function App() {
+
+const [heroData, setHeroData] = useState([])
+
+  useEffect(() => {
+    const config = {
+      method: 'get',
+      url: 'https://gateway.marvel.com/v1/public/characters?ts=1626733053105&apikey=4371a2cae22c2af54b8aa31a00bc59f7&hash=c23153c39c8ecbe5db034516d96ff51e',
+      headers: { 
+        'Content-Type': 'application/json'
+      }
+    };
+
+    axios(config)
+      .then(function (response) {
+      setHeroData(response.data)
+      // console.log(heroData.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <Card heroData={heroData}/>
+      </div>
     </div>
   );
 }
