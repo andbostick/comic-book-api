@@ -1,15 +1,18 @@
-import react from 'react'
+
 
 function Card({ heroData }) {
     const hero = heroData.data;
-    console.log(heroData.data)
+    console.log(heroData)
     return (
         <>
-            {/* {hero.results.map((d) => {
-                return(
-                <p>{d.name} </p>)
+            {hero.results.map((d) => {
+                return (
+                    <div>
+                        <p>{d.name} </p>
+                        <p>{d.description}</p>
+                    </div>)
             })}
-             */}
+            
         </>
     )
 }
