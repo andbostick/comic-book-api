@@ -3,41 +3,32 @@ import { Form } from "react-bootstrap";
 import Button from 'react-bootstrap/Button'
 
 
-function Search({ setHeroData }) {
+function Search({ setHeroData, setLoading }) {
     
-    const [searchInput, setSearchInput] = useState('hulk')
-    const [query,setQuery] = useState(' ')
+    const [searchInput, setSearchInput] = useState('captain america')
+    const [query, setQuery] = useState('')
+    const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };    
+
     useEffect(() => {
-    
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-          };
-           
-          fetch(`https://gateway.marvel.com/v1/public/characters?ts=1626733053105&apikey=4371a2cae22c2af54b8aa31a00bc59f7&hash=c23153c39c8ecbe5db034516d96ff51e&name=${searchInput}`, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-              // console.log(response)
-              setHeroData(response)
-            })
-            .catch(err =>
-            console.log('error', err))
-          
-      
-    
-    }, [searchInput]);
+        // setLoading(true);
 
-    function handleSubmit(e)  {
-        e.preventDefault();
-       
-        console.log(searchInput);
         
-    }
-
-    function handleChange(e) {
-        setSearchInput(e.target.value)
-       
-    }
+           fetch(`https://gateway.marvel.com/v1/public/characters?ts=1626733053105&apikey=4371a2cae22c2af54b8aa31a00bc59f7&hash=c23153c39c8ecbe5db034516d96ff51e&name=${searchInput}`, requestOptions)
+                .then(response => response.json())
+                .then(response => {
+                    setHeroData(response)
+                    console.log('fetched')
+                })
+                .then(setLoading(false))
+                .catch(err =>
+                    console.log('error', err))
+        
+        
+        
+    }, [searchInput]);
     
     return (
         <Form >
@@ -49,7 +40,7 @@ function Search({ setHeroData }) {
                     value={query}
                     onChange={event => setQuery((event.target.value))} />
                 
-                <Button onClick={() => setSearchInput(query)}>Submit</Button>
+                <Button onClick={() => (setSearchInput(query))}>Submit</Button>
             </Form.Group>
         </Form>
     )
